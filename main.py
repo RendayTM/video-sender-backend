@@ -79,12 +79,13 @@ def add_video(video: dict):
 
     cursor.execute(
         """
-        INSERT INTO queue (name, url)
-        VALUES (?, ?)
+        INSERT INTO queue (name, url, status)
+        VALUES (?, ?, ?)
         """,
         (
             name,
-            video["url"]
+            video["url"],
+            "queued"
         )
     )
 
@@ -140,7 +141,8 @@ def get_queue():
         result.append({
             "id": video[0],
             "name": video[1],
-            "url": video[2]
+            "url": video[2],
+            "status": video[3]
         })
 
     return result
@@ -155,7 +157,7 @@ def get_next_video():
 
     cursor.execute(
         """
-        SELECT id, name, url
+        SELECT id, name, url, status
         FROM queue
         ORDER BY id ASC
         LIMIT 1
