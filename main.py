@@ -47,8 +47,6 @@ connection.commit()
 def validate_video(url):
 
     options = {
-        "quiet": True,
-        "skip_download": True,
     }
 
     try:
