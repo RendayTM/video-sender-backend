@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
 import time
+import yt_dlp
 
 player_last_seen = 0
 
@@ -43,6 +44,22 @@ CREATE TABLE IF NOT EXISTS queue (
 
 connection.commit()
 
+def validate_video(url):
+
+    options = {
+        "quiet": True,
+        "skip_download": True,
+    }
+
+    try:
+        with yt_dlp.YoutubeDL(options) as ydl:
+            ydl.extract_info(url, download=False)
+
+        return True
+
+    except Exception:
+        return False
+
 
 # -----------------------------
 # Add Video
@@ -55,6 +72,12 @@ def add_video(video: dict):
 
     if not name.strip():
         name = "Anonymous"
+
+    if not validate_video(video["url"]):
+        return {
+            "success": False,
+            "message": "This link could not be loaded."
+        }
 
     cursor.execute(
         """
