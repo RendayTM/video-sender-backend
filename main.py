@@ -1,6 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
+import time
+
+player_last_seen = 0
 
 app = FastAPI()
 
@@ -70,6 +73,28 @@ def add_video(video: dict):
         "message": "Video added"
     }
 
+
+@app.post("/heartbeat")
+def heartbeat():
+    global player_last_seen
+
+    player_last_seen = time.time()
+
+    return {
+        "status": "ok"
+    }
+
+@app.get("/player-status")
+def player_status():
+
+    if time.time() - player_last_seen < 15:
+        return {
+            "online": True
+        }
+
+    return {
+        "online": False
+    }
 
 # -----------------------------
 # Get Entire Queue
