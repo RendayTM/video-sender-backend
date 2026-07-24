@@ -160,6 +160,7 @@ def get_next_video():
         """
         SELECT id, name, url, status
         FROM queue
+        WHERE status = 'queued'
         ORDER BY id ASC
         LIMIT 1
         """
