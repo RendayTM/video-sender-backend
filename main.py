@@ -202,7 +202,7 @@ def finished_video():
             "message": "Queue empty"
         }
 
-
+    time.sleep(30)
     cursor.execute(
         """
         DELETE FROM queue
