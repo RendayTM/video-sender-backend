@@ -184,15 +184,15 @@ def get_next_video():
 # -----------------------------
 
 @app.post("/finished")
-def finished_video():
+def finished_video(video_id: int):
 
     cursor.execute(
         """
-        SELECT id
-        FROM queue
-        ORDER BY id ASC
-        LIMIT 1
-        """
+        UPDATE queue
+        SET status = 'finished'
+        WHERE id = ?
+        """,
+        (video_id,)
     )
 
     video = cursor.fetchone()
