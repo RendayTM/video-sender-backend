@@ -75,6 +75,27 @@ def add_video(video: dict):
         "message": "Video added"
     }
 
+@app.post("/status/{video_id}")
+def update_status(video_id: int, data: dict):
+
+    cursor.execute(
+        """
+        UPDATE queue
+        SET status = ?
+        WHERE id = ?
+        """,
+        (
+            data["status"],
+            video_id
+        )
+    )
+
+    connection.commit()
+
+    return {
+        "message": "Status updated"
+    }
+
 
 @app.post("/heartbeat")
 def heartbeat():
