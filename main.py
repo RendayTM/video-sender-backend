@@ -192,30 +192,14 @@ def finished_video(video_id: int):
         SET status = 'finished'
         WHERE id = ?
         """,
-        (video_id,)
-    )
-
-    video = cursor.fetchone()
-
-    if video is None:
-        return {
-            "message": "Queue empty"
-        }
-
-    time.sleep(30)
-    cursor.execute(
-        """
-        DELETE FROM queue
-        WHERE id = ?
-        """,
-        (video[0],)
+        (video_id)
     )
 
     connection.commit()
 
 
     return {
-        "message": "Video removed"
+        "message": "Video marked as finished"
     }
 
 
