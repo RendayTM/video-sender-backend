@@ -107,7 +107,7 @@ def get_queue():
 
     cursor.execute(
         """
-        SELECT id, name, url
+        SELECT id, name, url, status
         FROM queue
         ORDER BY id ASC
         """
